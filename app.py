@@ -11,12 +11,13 @@ app = Flask(__name__)
 CORS(app)
 
 model = tf.keras.models.load_model("cd_resnet50.keras")
+img_height, img_width = 384, 512
+class_names = ["cardboard", "glass", "metallic", "paper", "plastic"]
 
 @app.route("/", methods=["POST"])
 @cross_origin()
 def classify():
-    img_height, img_width = 384, 512
-    class_names = ["cardboard", "glass", "metallic", "paper", "plastic"]
+    
     json = request.get_json()
     imb64str = json["image"]
     imb64str2 = re.sub('^data:image/.+;base64,', '', imb64str)
